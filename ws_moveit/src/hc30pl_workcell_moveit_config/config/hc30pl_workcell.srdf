@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="hc30pl_workcell">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <group name="manipulator">
+        <chain base_link="base_link" tip_link="tool0"/>
+    </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values.-->
+    <group_state name="home" group="manipulator">
+        <joint name="joint_1_s" value="0"/>
+        <joint name="joint_2_l" value="0"/>
+        <joint name="joint_3_u" value="0"/>
+        <joint name="joint_4_r" value="0"/>
+        <joint name="joint_5_b" value="0"/>
+        <joint name="joint_6_t" value="0"/>
+    </group_state>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <!-- We skip standard moveit end effector linking for simple pick/place if not strictly required, but defining it is good. -->
+    
+    <!--DISABLE COLLISIONS-->
+    <!-- It is critical to disable collisions between adjacent links, otherwise planning will instantly fail. -->
+    <disable_collisions link1="base_link" link2="base_frame" reason="Adjacent"/>
+    <disable_collisions link1="base_link" link2="link_1_s" reason="Adjacent"/>
+    <disable_collisions link1="link_1_s" link2="link_2_l" reason="Adjacent"/>
+    <disable_collisions link1="link_2_l" link2="link_3_u" reason="Adjacent"/>
+    <disable_collisions link1="link_3_u" link2="link_4_r" reason="Adjacent"/>
+    <disable_collisions link1="link_4_r" link2="link_5_b" reason="Adjacent"/>
+    <disable_collisions link1="link_5_b" link2="link_6_t" reason="Adjacent"/>
+    
+    <!-- Workcell Environment Collisions -->
+    <disable_collisions link1="base_frame" link2="conveyor" reason="Adjacent"/>
+    <disable_collisions link1="base_frame" link2="turner" reason="Adjacent"/>
+    <disable_collisions link1="conveyor" link2="turner" reason="Adjacent"/>
+    
+    <!-- Tooling Collisions -->
+    <disable_collisions link1="link_6_t" link2="gripper_top" reason="Adjacent"/>
+    <disable_collisions link1="gripper_top" link2="gripper_bottom" reason="Adjacent"/>
+    <!-- Allow tool parts to ignore collisions with last few links -->
+    <disable_collisions link1="link_5_b" link2="gripper_top" reason="Never"/>
+    <disable_collisions link1="link_6_t" link2="gripper_bottom" reason="Never"/>
+    
+</robot>

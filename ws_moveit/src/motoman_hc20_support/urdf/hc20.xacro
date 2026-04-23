@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<robot name="motoman_hc20" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find motoman_hc20_support)/urdf/hc20_macro.xacro" />
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
+  
+  <link name="world"/>
+  <joint name="world_to_base_link" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:motoman_hc20 prefix=""/>
+
+  <!-- Attach Gripper -->
+  <xacro:robotiq_gripper 
+    name="robotiq_gripper" 
+    prefix="" 
+    parent="tool0" 
+    include_ros2_control="true"
+    sim_gazebo="true"
+    use_fake_hardware="false">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:robotiq_gripper>
+</robot>

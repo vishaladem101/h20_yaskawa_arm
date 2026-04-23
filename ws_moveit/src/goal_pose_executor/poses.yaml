@@ -1,0 +1,22 @@
+goal_pose_executor:
+  ros__parameters:
+    initial_gripper_status: true
+    threshold_z: -0.05
+    gripper_pose:
+      open: 0.0
+      close: 0.8
+    initial_pos:
+      x: 0.7
+      y: -0.2
+      z: 0.6
+      w: 1.0
+    goal_pose:
+      x: 0.7
+      y: 0.2
+      z: 0.6
+      w: 1.0
+    home_pos:
+      x: 0.5
+      y: 0.0
+      z: 0.8
+      w: 1.0

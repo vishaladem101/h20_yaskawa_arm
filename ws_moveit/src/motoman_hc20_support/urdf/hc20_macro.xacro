@@ -1,0 +1,254 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="motoman_hc20" params="prefix">
+    <xacro:macro name="material_yaskawa_white">
+      <material name="yaskawa_white">
+        <color rgba="0.85 0.85 0.85 1"/>
+      </material>
+    </xacro:macro>
+
+    <xacro:macro name="default_inertial" params="mass">
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <mass value="${mass}"/>
+        <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+      </inertial>
+    </xacro:macro>
+
+    <!-- link list -->
+    <link name="${prefix}base_link">
+      <xacro:default_inertial mass="20.0"/>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/visual/base_link.stl"/>
+        </geometry>
+        <xacro:material_yaskawa_white/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/collision/base_link.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="${prefix}base_link">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <link name="${prefix}link_1_s">
+      <xacro:default_inertial mass="15.0"/>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/visual/link_1_s.stl"/>
+        </geometry>
+        <xacro:material_yaskawa_white/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/collision/link_1_s.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="${prefix}link_1_s">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <link name="${prefix}link_2_l">
+      <xacro:default_inertial mass="15.0"/>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/visual/link_2_l.stl"/>
+        </geometry>
+        <xacro:material_yaskawa_white/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/collision/link_2_l.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="${prefix}link_2_l">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <link name="${prefix}link_3_u">
+      <xacro:default_inertial mass="12.0"/>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/visual/link_3_u.stl"/>
+        </geometry>
+        <xacro:material_yaskawa_white/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/collision/link_3_u.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="${prefix}link_3_u">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <link name="${prefix}link_4_r">
+      <xacro:default_inertial mass="10.0"/>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/visual/link_4_r.stl"/>
+        </geometry>
+        <xacro:material_yaskawa_white/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/collision/link_4_r.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="${prefix}link_4_r">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <link name="${prefix}link_5_b">
+      <xacro:default_inertial mass="7.0"/>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/visual/link_5_b.stl"/>
+        </geometry>
+        <xacro:material_yaskawa_white/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/collision/link_5_b.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="${prefix}link_5_b">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <link name="${prefix}link_6_t">
+      <xacro:default_inertial mass="5.0"/>
+      <visual>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/visual/link_6_t.stl"/>
+        </geometry>
+        <xacro:material_yaskawa_white/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="file://$(find motoman_hc20_support)/meshes/hc20/collision/link_6_t.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="${prefix}link_6_t">
+      <material>Gazebo/White</material>
+    </gazebo>
+    <link name="${prefix}tool0"/>
+    <!-- end of link list -->
+
+    <!-- joint list -->
+    <joint name="${prefix}joint_1_s" type="revolute">
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}link_1_s"/>
+      <origin xyz="0 0 0.380" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${radians(-180)}" upper="${radians(180)}" effort="917.28" velocity="${radians(80)}"/>
+    </joint>
+    <joint name="${prefix}joint_2_l" type="revolute">
+      <parent link="${prefix}link_1_s"/>
+      <child link="${prefix}link_2_l"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit lower="${radians(-180)}" upper="${radians(180)}" effort="1223.04" velocity="${radians(80)}"/>
+    </joint>
+    <joint name="${prefix}joint_3_u" type="revolute">
+      <parent link="${prefix}link_2_l"/>
+      <child link="${prefix}link_3_u"/>
+      <origin xyz="0 0 0.820" rpy="0 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="${radians(-67)}" upper="${radians(247)}" effort="642.88" velocity="${radians(120)}"/>
+    </joint>
+    <joint name="${prefix}joint_4_r" type="revolute">
+      <parent link="${prefix}link_3_u"/>
+      <child link="${prefix}link_4_r"/>
+      <origin xyz="0.880 0 0" rpy="0 0 0" />
+      <axis xyz="-1 0 0" />
+      <limit lower="${radians(-210)}" upper="${radians(210)}" effort="368.48" velocity="${radians(130)}"/>
+    </joint>
+    <joint name="${prefix}joint_5_b" type="revolute">
+      <parent link="${prefix}link_4_r"/>
+      <child link="${prefix}link_5_b"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="${radians(-180)}" upper="${radians(180)}" effort="141.12" velocity="${radians(180)}"/>
+    </joint>
+    <joint name="${prefix}joint_6_t" type="revolute">
+      <parent link="${prefix}link_5_b"/>
+      <child link="${prefix}link_6_t"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="-1 0 0" />
+      <limit lower="${radians(-210)}" upper="${radians(210)}" effort="141.12" velocity="${radians(180)}"/>
+    </joint>
+    <joint name="${prefix}joint_6_t-tool0" type="fixed">
+      <origin xyz="0.200 0 0" rpy="${radians(180)} ${radians(-90)} 0"/>
+      <parent link="${prefix}link_6_t"/>
+      <child link="${prefix}tool0"/>
+    </joint>
+    <!-- end of joint list -->
+
+    <!-- ROS base_link to Robot Manufacturer World Coordinates transform -->
+    <link name="${prefix}base" />
+    <!-- ros2_control -->
+    <ros2_control name="GazeboSystem" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <joint name="${prefix}joint_1_s">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}joint_2_l">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}joint_3_u">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}joint_4_r">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}joint_5_b">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}joint_6_t">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+
+    <gazebo>
+      <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>$(find motoman_hc20_support)/config/hc20_controllers.yaml</parameters>
+      </plugin>
+    </gazebo>
+
+    <joint name="${prefix}base_link-base" type="fixed">
+      <origin xyz="0 0 0.380" rpy="0 0 0"/>
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}base"/>
+    </joint>
+  </xacro:macro>
+</robot>

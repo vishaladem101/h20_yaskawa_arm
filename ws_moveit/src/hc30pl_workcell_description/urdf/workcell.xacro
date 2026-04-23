@@ -1,0 +1,136 @@
+<?xml version="1.0" ?>
+<robot name="hc30pl_workcell" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Include Arm Macro -->
+  <xacro:include filename="$(find hc30pl_workcell_description)/urdf/hc30pl_macro.xacro" />
+  
+  <!-- Instantiate Arm -->
+  <xacro:motoman_hc30pl prefix=""/>
+
+  <!-- Base Frame: Grundrahmen-mit-Sockel -->
+  <link name="base_frame">
+    <visual>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/Grundrahmen-mit-Sockel.stl" />
+      </geometry>
+      <material name="light_grey">
+        <color rgba="0.7 0.7 0.7 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/Grundrahmen-mit-Sockel.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- World link to anchor everything -->
+  <link name="world" />
+
+  <!-- Connect World to Base Frame -->
+  <joint name="world_to_base_frame" type="fixed">
+    <parent link="world" />
+    <child link="base_frame" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- Connect Base Frame to Robot Base -->
+  <!-- Assuming the base frame has some height where the robot is mounted. 
+       We will assume 0.0 for now, but this should be calibrated -->
+  <joint name="base_frame_to_robot" type="fixed">
+    <parent link="base_frame" />
+    <child link="base_link" />
+    <origin xyz="0 0 0.8" rpy="0 0 0" />
+  </joint>
+
+  <!-- Environment: Ablagebänder -->
+  <link name="conveyor">
+    <visual>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/Ablagebänder.stl" />
+      </geometry>
+      <material name="blue">
+        <color rgba="0.2 0.2 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/Ablagebänder.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="world_to_conveyor" type="fixed">
+    <parent link="world" />
+    <child link="conveyor" />
+    <origin xyz="1.0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- Environment: derWendler -->
+  <link name="turner">
+    <visual>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/derWendler.stl" />
+      </geometry>
+      <material name="green">
+        <color rgba="0.2 0.8 0.2 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/derWendler.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="world_to_turner" type="fixed">
+    <parent link="world" />
+    <child link="turner" />
+    <origin xyz="0 1.0 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- Custom Tooling: Greifer-Saugeroben -->
+  <link name="gripper_top">
+    <visual>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/Greifer-Saugeroben.stl" />
+      </geometry>
+      <material name="dark_grey">
+        <color rgba="0.3 0.3 0.3 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/Greifer-Saugeroben.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="tool0_to_gripper_top" type="fixed">
+    <parent link="tool0" />
+    <child link="gripper_top" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- Custom Tooling: Greifer-Saugerunten -->
+  <link name="gripper_bottom">
+    <visual>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/Greifer-Saugerunten.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://hc30pl_workcell_description/meshes/environment/Greifer-Saugerunten.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Attach bottom gripper part below the top part (assuming an offset) -->
+  <joint name="gripper_top_to_bottom" type="fixed">
+    <parent link="gripper_top" />
+    <child link="gripper_bottom" />
+    <origin xyz="0 0 -0.05" rpy="0 0 0" />
+  </joint>
+
+</robot>

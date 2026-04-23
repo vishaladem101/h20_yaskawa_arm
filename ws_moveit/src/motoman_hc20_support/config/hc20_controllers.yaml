@@ -1,0 +1,56 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    manipulator_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+manipulator_controller:
+  ros__parameters:
+    joints:
+      - joint_1_s
+      - joint_2_l
+      - joint_3_u
+      - joint_4_r
+      - joint_5_b
+      - joint_6_t
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: true
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+      joint_1_s: { trajectory: 0.2, goal: 0.1 }
+      joint_2_l: { trajectory: 0.2, goal: 0.1 }
+      joint_3_u: { trajectory: 0.2, goal: 0.1 }
+      joint_4_r: { trajectory: 0.2, goal: 0.1 }
+      joint_5_b: { trajectory: 0.2, goal: 0.1 }
+      joint_6_t: { trajectory: 0.2, goal: 0.1 }
+
+gripper_controller:
+  ros__parameters:
+    joints:
+      - robotiq_85_left_knuckle_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: true
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+      robotiq_85_left_knuckle_joint: { trajectory: 0.2, goal: 0.1 }

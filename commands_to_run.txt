@@ -1,0 +1,27 @@
+# --- Build & Setup Commands (Optimized for 16GB RAM) ---
+
+# 1. Install & Configure Colcon Mixins (One-time)
+# This enables the --mixin release flag for optimized builds
+sudo apt update
+sudo apt install python3-colcon-mixin -y
+colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml || true
+colcon mixin update default
+
+# 2. Install Workspace Dependencies
+rosdep install -r --from-paths src --ignore-src --rosdistro jazzy -y
+
+# 3. The "Safe" Build (Throttled)
+# sequential build and -j2 limit RAM/CPU usage per package to prevent freezes
+
+#Run below commands inside ws_moveit
+MAKEFLAGS="-j2" colcon build --mixin release --executor sequential
+
+
+#Run Below commands inside ws_moveit
+#Terminal 1
+source install/setup.bash
+ros2 launch motoman_hc20_support gazebo.launch.py
+
+#Terminal 2
+source install/setup.bash
+ros2 launch goal_pose_executor goal_pose_executor.launch.py
